@@ -3,12 +3,19 @@
 }
 .main{
     background-color: white;
-    margin-bottom: 30px;
-    margin-left: 60px;
-    margin-right: 60px
+    margin: 30px;
+    /*margin-bottom: 30px;*/
+    /*margin-left: 60px;*/
+    /*margin-right: 60px*/
 }
 
 .btn-publish{
     float: right;
     margin-top: 1px;
+}
+
+.text-desc{
+    font-size: 12px;
+    font-weight: normal;
+    color: #999999;
 }
