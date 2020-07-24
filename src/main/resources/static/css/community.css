@@ -1,12 +1,12 @@
 .body{
-    background-color: darkgrey;
+    background-color: #dddddd;
 }
 .main{
     background-color: white;
-    margin: 30px;
-    /*margin-bottom: 30px;*/
-    /*margin-left: 60px;*/
-    /*margin-right: 60px*/
+    /*margin: 30px;*/
+    margin-top: 50px;
+    margin-left: 180px;
+    margin-right: 180px
 }
 
 .btn-publish{
@@ -17,5 +17,14 @@
 .text-desc{
     font-size: 12px;
     font-weight: normal;
+    color: #999999;
+}
+
+.profile.section{
+    margin: 20px;
+}
+
+.community-menu{
+    font-size: 13px;
     color: #999999;
 }

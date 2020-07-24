@@ -6,17 +6,19 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/community.css">
-    <script src="js/jquery-3.3.4.min.js"></script>
+    <script src="/js/jquery-3.3.4.min.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
 </head>
-<body style="background-color: #efefef">
+<body class="body">
 <div th:insert="navigation::nav"></div>
 <div class="container-fluid main">
     <div class="row">
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h2><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>  发起</h2>
             <hr>
+
             <form action="/publish" method="post">
+                <input type="hidden" name="id" th:value="${id}">
                 <div class="form-group">
                     <label for="title">问题标题 (简单概要)</label>
                     <input type="text" class="form-control" th:value="${title}" name="title" id="title" placeholder="问题标题....">
