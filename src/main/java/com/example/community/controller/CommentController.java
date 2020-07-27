@@ -31,11 +31,10 @@ public class CommentController {
     public Object post(@RequestBody CommentDto commentDto,
                        HttpServletRequest request){
 
-       /* User user = (User) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
         if(user==null){
             return ResultDto.errorOf(CustomizeErrorCode.NO_LOGIN);
-        }*/
-
+        }
         Comment comment = new Comment();
         comment.setParentId(commentDto.getParentId());
         comment.setContent(commentDto.getContent());
