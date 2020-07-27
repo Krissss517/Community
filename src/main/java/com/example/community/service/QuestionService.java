@@ -2,11 +2,16 @@ package com.example.community.service;
 
 import com.example.community.dto.PageDto;
 import com.example.community.dto.QuestionDto;
+import com.example.community.exception.CustomizeErrorCode;
+import com.example.community.exception.CustomizeException;
+import com.example.community.mapper.QuestionExtMapper;
 import com.example.community.mapper.QuestionMapper;
 import com.example.community.mapper.UserMapper;
 import com.example.community.model.Question;
+import com.example.community.model.QuestionExample;
 import com.example.community.model.User;
 import com.example.community.model.UserExample;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,13 +26,16 @@ public class QuestionService {
     QuestionMapper questionMapper;
 
     @Autowired
+    QuestionExtMapper questionExtMapper;
+    @Autowired
     UserMapper userMapper;
 
     public PageDto list(Integer pageNum, Integer pageSize) {
 
         PageDto pageDto = new PageDto();
         Integer totalPage;
-        Integer totalCount = questionMapper.count();
+        QuestionExample questionExample = new QuestionExample();
+        Integer totalCount = (int)questionMapper.countByExample(questionExample);
 
         if(totalCount%pageSize==0){
             totalPage=totalCount/pageSize;
@@ -42,7 +50,7 @@ public class QuestionService {
         pageDto.setPagination(totalPage,pageNum);
         //size*(i-1)
         Integer offset=pageSize*(pageNum-1);
-        List<Question> questions = questionMapper.list(offset,pageSize);
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(),new RowBounds(offset,pageSize));
         List<QuestionDto> questionDtos=new ArrayList<>();
 
         for(Question question:questions){
@@ -59,12 +67,13 @@ public class QuestionService {
         return pageDto;
     }
 
-    public PageDto list(Integer userId, int pageNum, int pageSize) {
+    public PageDto list(Long userId, int pageNum, int pageSize) {
 
         PageDto pageDto = new PageDto();
         Integer totalPage;
-        Integer totalCount = questionMapper.countByUserId(userId);
-
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.createCriteria().andCreatorEqualTo(userId);
+        Integer totalCount = (int)questionMapper.countByExample(questionExample);
         if(totalCount%pageSize==0){
             totalPage=totalCount/pageSize;
         }else{
@@ -78,7 +87,10 @@ public class QuestionService {
         pageDto.setPagination(totalPage,pageNum);
         //size*(i-1)
         Integer offset=pageSize*(pageNum-1);
-        List<Question> questions = questionMapper.listByUserId(userId,offset,pageSize);
+        QuestionExample questionExample1 = new QuestionExample();
+        questionExample1.createCriteria()
+                .andCreatorEqualTo(userId);
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample1,new RowBounds(offset,pageSize));
         List<QuestionDto> questionDtos=new ArrayList<>();
 
         for(Question question:questions){
@@ -95,11 +107,14 @@ public class QuestionService {
         return pageDto;
     }
 
-    public QuestionDto getById(Integer id) {
-        Question question= questionMapper.getById(id);
+    public QuestionDto getById(Long id) {
+        Question question= questionMapper.selectByPrimaryKey(id);
+        if(question==null){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
         QuestionDto questionDto=new QuestionDto();
         BeanUtils.copyProperties(question,questionDto);
-
+        questionDto.setCreatorId(questionDto.getCreator());
         UserExample userExample = new UserExample();
         userExample.createCriteria().andIdEqualTo(question.getCreator());
         List<User> users=userMapper.selectByExample(userExample);
@@ -113,11 +128,32 @@ public class QuestionService {
             //如果id为空，说明第一次插入问题
             question.setGmtCreate(System.currentTimeMillis());
             question.setGmtModified(question.getGmtCreate());
-            questionMapper.create(question);
+            question.setViewCount(0);
+            question.setCommentCount(0);
+            question.setLikeCount(0);
+            questionMapper.insert(question);
         }else{
             //更新
             question.setGmtModified(System.currentTimeMillis());
-            questionMapper.update(question);
+            Question updateQuestion = new Question();
+            updateQuestion.setGmtModified(System.currentTimeMillis());
+            updateQuestion.setTitle(question.getTitle());
+            updateQuestion.setDescription(question.getDescription());
+            QuestionExample questionExample = new QuestionExample();
+            questionExample.createCriteria()
+                    .andIdEqualTo(question.getId());
+            int i = questionMapper.updateByExampleSelective(updateQuestion, questionExample);
+            if(i!=1){
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
+    }
+
+    //更新查看页面的阅读数
+    public void incView(Long id) {
+        Question question=new Question();
+        question.setId(id);
+        question.setViewCount(1);
+        questionExtMapper.incView(question);
     }
 }
