@@ -11,6 +11,7 @@ import com.example.community.model.Question;
 import com.example.community.model.QuestionExample;
 import com.example.community.model.User;
 import com.example.community.model.UserExample;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -50,7 +52,9 @@ public class QuestionService {
         pageDto.setPagination(totalPage,pageNum);
         //size*(i-1)
         Integer offset=pageSize*(pageNum-1);
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(),new RowBounds(offset,pageSize));
+        QuestionExample example = new QuestionExample();
+        example.setOrderByClause("gmt_create desc");
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example,new RowBounds(offset,pageSize));
         List<QuestionDto> questionDtos=new ArrayList<>();
 
         for(Question question:questions){
@@ -155,5 +159,30 @@ public class QuestionService {
         question.setId(id);
         question.setViewCount(1);
         questionExtMapper.incView(question);
+    }
+
+    /**
+     * 通过标签搜索到与之相关的其他问题  正则表达式 eq:  Spring|JAVA|JSON
+     * @param questionDto
+     * @return
+     */
+    public List<QuestionDto> selectRelate(QuestionDto questionDto) {
+
+        if(questionDto.getTag()==null){
+            return new ArrayList<>();
+        }
+
+        String replace = StringUtils.replace(questionDto.getTag(), ",", "|");
+        Question question=new Question();
+        question.setTag(replace);
+        question.setId(questionDto.getId());
+        List<Question> questions = questionExtMapper.selectRelated(question);
+        List<QuestionDto> questionDtos = questions.stream().map(q -> {
+            QuestionDto questionDto1 = new QuestionDto();
+            BeanUtils.copyProperties(q, questionDto1);
+            return questionDto1;
+        }).collect(Collectors.toList());
+        return questionDtos;
+
     }
 }

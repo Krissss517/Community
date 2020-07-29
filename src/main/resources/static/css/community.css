@@ -1,7 +1,12 @@
-.body{
-    background-color: #dddddd;
+.body {
+    /*background-color: #dddddd;*/
+    background-image: url('/img/5.jpg');
+    background-color: rgba(0,0,0,0.1);
+    background-position: left;
 }
-.main{
+
+.main {
+    background-color: rgba(255,255,255,0.8);
     background-color: white;
     /*margin: 30px;*/
     margin-top: 50px;
@@ -9,35 +14,129 @@
     margin-right: 180px
 }
 
-.btn-publish{
+.btn-publish {
     float: right;
     margin-top: 1px;
 }
 
-.text-desc{
+.text-desc {
     font-size: 12px;
     font-weight: normal;
     color: #999999;
 }
 
-.profile.section{
+.profile.section {
     margin: 20px;
 }
 
-.community-menu{
+.community-menu {
+    display: block;
     font-size: 13px;
     color: #999999;
+    margin-bottom: 15px;
 }
 
-.jumbotron{
+.jumbotron {
     margin: 50px;
 }
 
-.comment{
+.comments {
+    margin-bottom: 16px;
+    border-bottom: 1px solid #e6e6e6;
+    padding-bottom: 5px;
+}
+
+.comment {
     margin: 21px 0;
 }
 
-.btn-comment{
+.btn-comment {
     float: right;
     margin-bottom: 19px;
+}
+
+.comment-sp {
+    margin-top: 0;
+}
+
+.menu {
+    color: #999999;
+    margin-top: 5px;
+}
+
+.menu .icon {
+    margin-right: 10px;
+    font-size: 15px;
+    cursor: pointer;
+}
+.menu .active {
+    color: #499ef3;
+}
+.menu .icon:hover {
+    color: #499ef3;
+}
+
+.sub-comments{
+    border-radius: 5px;
+    margin-top: 10px;
+    border:1px solid #eeeeee;
+    padding-top: 15px;
+    margin-bottom: 15px;
+}
+
+.sub-comments .btn{
+    margin: 12px 0;
+}
+
+.media-object {
+    width: 55px;
+    height: 55px;
+}
+
+.media-body {
+    padding-top: 10px;
+}
+
+.community-tag {
+    text-decoration-line: none;
+    cursor: pointer;
+    display: inline-block;
+    height: 20px;
+    line-height: 16px;
+    padding: 2px 5px;
+    background-color: #99cfff;
+    font-size: 12px;
+    color: #fff !important;
+    border-radius: 4px;
+    margin: 4px;
+}
+
+.question-tag{
+    margin-right: 12px;
+    font-size: 13px;
+}
+
+.question-tag .taginer{
+    font-size: 13px;
+}
+
+.relate-style{
+    font-size: 17px;
+    list-style: none;
+    padding-left: 0px;
+    line-height: 30px;
+}
+
+.question-wechat{
+    width: 50%;
+    margin-left: 83px;
+}
+
+.tag-tab{
+    display: none;
+    margin-top: 10px;
+}
+
+.tag-tab .label-info{
+    margin-right: 15px;
 }

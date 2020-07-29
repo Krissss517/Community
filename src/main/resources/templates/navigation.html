@@ -3,7 +3,7 @@
 <body>
 
     <div th:fragment="nav">
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-inverse">
             <div class="container-fluid" >
                 <div class="navbar-header">
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -31,7 +31,20 @@
                                 <li><a href="/profile/question">我的问题</a></li>
                                 <li><a href="/logout">退出登录</a></li>
                             </ul>
+
+
                         </li>
+                        <li th:if="${session.user!=null}" style="margin-right: -9px">
+                            <div  style="margin-top: 6px;margin-left: 7px">
+                                <div class="media-left">
+                                    <a href="#">
+                                        <img class="img-circle" style="width: 38px"
+                                             th:src="${session.user.avatarUrl}">
+                                    </a>
+                                </div>
+                            </div>
+                        </li>
+
                         <li th:if="${session.user}==null">
                             <a href="https://github.com/login/oauth/authorize?client_id=b5c58369cbc85cb2e5f1&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登录</a>
                         </li>
