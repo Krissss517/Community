@@ -23,11 +23,13 @@ public class IndexController {
     @GetMapping("/")
     public String index(HttpServletRequest request, Model model,
                         @RequestParam(name = "page",defaultValue = "1") int page,
-                        @RequestParam(name = "size",defaultValue = "5") int size
+                        @RequestParam(name = "size",defaultValue = "5") int size,
+                        @RequestParam(name = "search",required = false) String search
     ){
 
-        PageDto pageDto=questionService.list(page,size);
+        PageDto pageDto=questionService.list(search,page,size);
         model.addAttribute("pageDto",pageDto);
+        model.addAttribute("search",search);
         return "index";
     }
 

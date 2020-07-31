@@ -2,6 +2,7 @@ package com.example.community.service;
 
 import com.example.community.dto.PageDto;
 import com.example.community.dto.QuestionDto;
+import com.example.community.dto.QuestionQueryDto;
 import com.example.community.exception.CustomizeErrorCode;
 import com.example.community.exception.CustomizeException;
 import com.example.community.mapper.QuestionExtMapper;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,12 +34,20 @@ public class QuestionService {
     @Autowired
     UserMapper userMapper;
 
-    public PageDto list(Integer pageNum, Integer pageSize) {
+    public PageDto list(String search, Integer pageNum, Integer pageSize) {
+        if(StringUtils.isNotBlank(search)){
+            //按照空格进行分割，并且将数组按照|进行拼接
+            String[] tags = StringUtils.split(search, " ");
+            search= Arrays.stream(tags).collect(Collectors.joining("|"));
+        }
+
+
 
         PageDto pageDto = new PageDto();
         Integer totalPage;
-        QuestionExample questionExample = new QuestionExample();
-        Integer totalCount = (int)questionMapper.countByExample(questionExample);
+        QuestionQueryDto questionQueryDto = new QuestionQueryDto();
+        questionQueryDto.setSearch(search);
+        Integer totalCount =questionExtMapper.countBySearch(new QuestionQueryDto());
 
         if(totalCount%pageSize==0){
             totalPage=totalCount/pageSize;
@@ -47,14 +57,14 @@ public class QuestionService {
         if(pageNum<1)
             pageNum=1;
 
-        if(totalPage!=0&&pageNum>totalPage)
+        if(pageNum>totalPage)
             pageNum=totalPage;
         pageDto.setPagination(totalPage,pageNum);
         //size*(i-1)
         Integer offset=pageSize*(pageNum-1);
-        QuestionExample example = new QuestionExample();
-        example.setOrderByClause("gmt_create desc");
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(example,new RowBounds(offset,pageSize));
+        questionQueryDto.setPage(offset);
+        questionQueryDto.setSize(pageSize);
+        List<Question> questions = questionExtMapper.selectBySearch(questionQueryDto);
         List<QuestionDto> questionDtos=new ArrayList<>();
 
         for(Question question:questions){
@@ -66,14 +76,14 @@ public class QuestionService {
             questionDto.setUser(users.get(0));
             questionDtos.add(questionDto);
         }
-        pageDto.setQuestions(questionDtos);
+        pageDto.setData(questionDtos);
 
         return pageDto;
     }
 
     public PageDto list(Long userId, int pageNum, int pageSize) {
 
-        PageDto pageDto = new PageDto();
+        PageDto<QuestionDto> pageDto = new PageDto();
         Integer totalPage;
         QuestionExample questionExample = new QuestionExample();
         questionExample.createCriteria().andCreatorEqualTo(userId);
@@ -106,7 +116,7 @@ public class QuestionService {
             questionDto.setUser(users.get(0));
             questionDtos.add(questionDto);
         }
-        pageDto.setQuestions(questionDtos);
+        pageDto.setData(questionDtos);
 
         return pageDto;
     }

@@ -9,6 +9,9 @@ public enum CustomizeErrorCode implements ICustomizeException{
     TYPE_PARAM_WRONG(2005,"评论类型错误或者不存在！！！"),
     COMMENT_NOT_FOUND(2006,"你要回复的评论已不存在！！！"),
     COMMENT_NOT_NULL(2007,"输入内容不能为空！！！"),
+    READ_NOTIFICATION_FAIL(2008,"兄弟你这是读取别人的信息！！！"),
+    NOTIFICATION_NOT_FOUND(2009,"消息是不是不翼而飞了！！！"),
+    FILE_UPLOAD_FAIL(2010,"上传文件失败啦！！！")
 
     ;
     private String message;

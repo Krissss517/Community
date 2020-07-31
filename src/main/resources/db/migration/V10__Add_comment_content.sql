@@ -1,0 +1,1 @@
+alter  table comment add comment_content int default 0;

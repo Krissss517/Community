@@ -6,10 +6,14 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/community.css">
+    <link rel="stylesheet" href="/css/editormd.preview.min.css">
     <script src="/js/jquery-3.3.4.min.js"></script>
     <script src="/js/moment.js"></script>
     <script src="/js/community.js" type="application/javascript"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/editormd.js" type="application/javascript"></script>
+    <script src="/js/lib/marked.min.js"></script>
+    <script src="/js/lib/prettify.min.js"></script>
 </head>
 <body class="body">
 
@@ -28,7 +32,14 @@
             </span>
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <!--内容-->
-                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${questionDto.description}"></div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="question-view" >
+                    <textarea style="display:none;" th:text="${questionDto.description}"></textarea>
+                </div>
+                <script type="text/javascript">
+                    $(function() {
+                        editormd.markdownToHTML("question-view",{});
+                    });
+                </script>
                 <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <!--标签-->
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -70,8 +81,11 @@
                             <div class="menu" >
                                 <span class="glyphicon glyphicon-thumbs-up icon"></span>
                                 <span class="glyphicon glyphicon-thumbs-down icon"></span>
-                                <span class="glyphicon glyphicon-comment icon" th:data-id="${comment.id}"
-                                      onclick="collapseComments(this)"></span>
+                                <span th:data-id="${comment.id}"
+                                      onclick="collapseComments(this)" class="comment-icon">
+                                    <span class="glyphicon glyphicon-comment"></span>
+                                    <span th:text="${comment.commentContent}"></span>
+                                </span>
                                 <span class="pull-right"
                                       th:text="${#dates.format(comment.gmtCreate,'yyyy-MM-dd')}"></span>
                             </div>
@@ -100,12 +114,13 @@
                             <div class="media-left">
                                 <a href="#">
                                     <img class="media-object img-rounded" style="width: 55px"
-                                         th:src="${questionDto.user.avatarUrl}">
+                                         th:src="${session.user!=null? session.user.avatarUrl:'/images/img/8.png'}">
                                 </a>
+
                             </div>
                             <div class="media-body" style="padding-top: 19px">
                                 <h5 class="media-heading">
-                                    <a th:text="${questionDto.user.name}"></a>
+                                    <a th:text="${session.user!=null? session.user.name:'匿名用户'}"></a>
                                 </h5>
                             </div>
                         </div>
@@ -139,7 +154,7 @@
             <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <h4>站长微信</h4>
-                <img src="/img/WeChat.jpg" class="question-wechat img-thumbnail">
+                <img src="/images/img/WeChat.jpg" class="question-wechat img-thumbnail">
             </div>
             <!--相关问题-->
             <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -155,5 +170,6 @@
         </div>
     </div>
 </div>
+<div th:insert="footer::foot"></div>
 </body>
 </html>

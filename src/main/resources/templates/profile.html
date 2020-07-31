@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="${sectionName}">个人中心</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="/css/bootstrap.min.css">
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="/css/community.css">
@@ -17,10 +17,8 @@
         <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
             <h2><span th:text="${sectionName}"></span></h2>
             <hr>
-            <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
-                <h2><span class="glyphicon glyphicon-list" aria-hidden="true"></span>   发现 </h2>
-                <hr>
-                <div class="media" th:each="question:${pageDto.questions}">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:if="${section}=='questions'">
+                <div class="media" th:each="question:${pageDto.data}">
                     <div class="media-left">
                         <a href="#">
                             <img class="media-object img-rounded" style="width: 55px"
@@ -28,14 +26,45 @@
                         </a>
                     </div>
                     <div class="media-body">
-                        <h4 class="media-heading" th:text="${question.title}">怎么快速学会Springboot开发</h4>
+                        <h4 class="media-heading">
+                            <a th:href="@{'/question/'+${question.id}}" th:text="${question.title}"></a>
+                        </h4>
                         <span class="text-desc">
                         <span th:text="${question.commentCount}"></span> 个回复.
                         <span th:text="${question.viewCount}"></span> 次浏览.
-                        <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span> 小时前</span>
+                        <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
+                            小时前
+                        </span>
+                        <a th:href="@{'/publish/'+${question.id}}" class="community-menu"
+                           th:if="${session.user!=null&&session.user.id==question.creator}">
+                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                            编辑
+                        </a>
 
                     </div>
                 </div>
+
+            </div>
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" th:if="${section}=='replies'">
+                <div class="media" th:each="notificationDto:${pageDto.data}">
+                    <div class="media-body" th:if="${notificationDto.notifier!=session.user.id}">
+                        <p class="media-heading">
+                            <span th:text="${notificationDto.notifierName+' '+notificationDto.typeName+' '}"></span>
+                            <a th:href="@{'/notification/'+${notificationDto.id}}" th:text="${notificationDto.outerTitle}"></a>
+                            <span class="label label-danger" th:if="${notificationDto.status==0}">未读</span>
+
+                        </p>
+                            <span class="text-desc">
+                                    <span th:text="${#dates.format(notificationDto.gmtCreate,'yyyy-MM-dd HH:mm')}"></span>
+                            </span>
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <nav aria-label="Page navigation">
                     <ul class="pagination">
 
@@ -69,13 +98,16 @@
                     </ul>
                 </nav>
             </div>
+
+
         </div>
         <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
             <div class="list-group section">
-                <a href="/profile/question"  th:class="${section=='question'?'active list-group-item':'list-group-item'}">我的问题</a>
-                <a href="/profile/replies"  th:class="${section=='replies'?'active list-group-item':'list-group-item'}">
+                <a href="/profile/questions"
+                   th:class="${section=='question'?'active list-group-item':'list-group-item'}">我的问题</a>
+                <a href="/profile/replies" th:class="${section=='replies'?'active list-group-item':'list-group-item'}">
                     最新回复
-                    <span class="badge">23</span>
+                    <span class="badge" th:text="${session.unreadMessage}"></span>
                 </a>
             </div>
         </div>
@@ -83,5 +115,6 @@
 
 
 </div>
+<div th:insert="footer::foot"></div>
 </body>
 </html>

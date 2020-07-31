@@ -3,6 +3,7 @@ package com.example.community.controller;
 import com.example.community.dto.PageDto;
 import com.example.community.mapper.UserMapper;
 import com.example.community.model.User;
+import com.example.community.service.NotificationService;
 import com.example.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,9 @@ public class profileController {
     @Autowired
     QuestionService questionService;
 
+    @Autowired
+    NotificationService notificationService;
+
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable(name = "action") String action,
                           Model model, HttpServletRequest request,
@@ -30,16 +34,19 @@ public class profileController {
         User user = (User) request.getSession().getAttribute("user");
         if(user==null)
             return "redirect:/";
-        if("question".equals(action)){
-            model.addAttribute("section","question");
+        if("questions".equals(action)){
+            model.addAttribute("section","questions");
             model.addAttribute("sectionName","我的提问");
+            PageDto pageDto = questionService.list(user.getId(), page, size);
+            model.addAttribute("pageDto",pageDto);
         }else if("replies".equals(action)){
+            PageDto pageDto = notificationService.list(user.getId(), page, size);
             model.addAttribute("section","replies");
+            model.addAttribute("pageDto",pageDto);
             model.addAttribute("sectionName","我的最新回复");
         }
 
-        PageDto pageDto = questionService.list(user.getId(), page, size);
-        model.addAttribute("pageDto",pageDto);
+
         return "profile";
     }
 }
