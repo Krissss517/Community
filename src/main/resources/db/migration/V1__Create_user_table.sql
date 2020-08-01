@@ -1,11 +1,11 @@
-CREATE table user
+create table user
 (
-    id bigint AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    account_id VARCHAR (100),
-    name VARCHAR (50),
-    token VARCHAR (36),
-    gmt_create BIGINT ,
-    gmt_modified BIGINT,
-    bio VARCHAR(256),
+    id bigint auto_increment primary key not null,
+    account_id varchar (100),
+    name varchar (50),
+    token varchar (36),
+    gmt_create bigint ,
+    gmt_modified bigint,
+    bio varchar(256),
     avatar_url varchar(100)
 );
