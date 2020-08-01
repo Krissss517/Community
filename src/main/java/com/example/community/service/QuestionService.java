@@ -61,7 +61,7 @@ public class QuestionService {
             pageNum=totalPage;
         pageDto.setPagination(totalPage,pageNum);
         //size*(i-1)
-        Integer offset=pageSize*(pageNum-1);
+        Integer offset=pageNum<1? 0 : pageSize*(pageNum-1);
         questionQueryDto.setPage(offset);
         questionQueryDto.setSize(pageSize);
         List<Question> questions = questionExtMapper.selectBySearch(questionQueryDto);
