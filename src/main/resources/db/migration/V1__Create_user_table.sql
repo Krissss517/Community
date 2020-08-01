@@ -1,4 +1,4 @@
-CREATE table USER
+CREATE table user
 (
     id bigint AUTO_INCREMENT PRIMARY KEY NOT NULL,
     account_id VARCHAR (100),
