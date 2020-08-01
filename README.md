@@ -1,4 +1,14 @@
 ## Kris私人社区
+## 部署
+- Git
+- JDK
+- Maven
+- MYSQL
+## 步骤
+- yum update
+- yum install git
+- mkdir app
+- cd App
 
 ## 资料
 [Spring 文档](https://spring.io/guides)  
