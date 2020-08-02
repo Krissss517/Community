@@ -17,7 +17,7 @@
     <properties>
         <java.version>1.8</java.version>
     </properties>
-    <profiles>
+<!--    <profiles>
         <profile>
             <id>production</id>
             <properties>
@@ -41,7 +41,7 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
         </profile>
-    </profiles>
+    </profiles>-->
 
     <dependencies>
         <dependency>
@@ -126,9 +126,9 @@
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>5.2.4</version>
                 <configuration>
-                    <url>${db.url}</url>
-                    <user>${db.user}</user>
-                    <password>${db.password}</password>
+                    <url>jdbc:mysql://175.24.11.105:3306/community?serverTimezone=UTC</url>
+                    <user>root</user>
+                    <password>088794</password>
                 </configuration>
                 <dependencies>
                     <dependency>

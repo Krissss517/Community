@@ -1,7 +1,7 @@
 HELP.md
 target/
 #Logs
-/logs/
+
 .vs/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
@@ -18,11 +18,13 @@ target/
 
 ### IntelliJ IDEA ###
 .idea
+logs
 *.iws
 *.iml
 *.ipr
 
 ### NetBeans ###
+/logs/
 /nbproject/private/
 /nbbuild/
 /dist/
