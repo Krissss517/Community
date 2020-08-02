@@ -17,6 +17,9 @@
 - vim src/main/resources/application-production.properties
 - mvn package
 - java -jar -Dspring.profiles.active=production /root/App/Community/target/community-0.0.1-SNAPSHOT.jar
+- ps -aux | grep java
+- git pull
+- mvn clean compile flyway:migrate -Pproduction
 
 ## 资料
 [Spring 文档](https://spring.io/guides)  
