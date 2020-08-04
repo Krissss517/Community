@@ -1,6 +1,6 @@
 .body {
     /*background-color: #dddddd;*/
-    background-image: url('/images/img/1.jpg');
+    background-image: url('/images/img/cool-background.png');
     background-color: rgba(0,0,0,0.5);
     background-position: left;
 }
@@ -149,7 +149,7 @@
 .footer {
     text-align: center;
     font-size: 15px;
-    color: #e6e6e6;;
+    color: #0f0f0f;;
     padding: 0 0 20px 0;
     margin-top: 10px;
 }
