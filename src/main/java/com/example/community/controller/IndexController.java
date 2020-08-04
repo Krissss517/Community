@@ -23,7 +23,7 @@ public class IndexController {
     @GetMapping("/")
     public String index(HttpServletRequest request, Model model,
                         @RequestParam(name = "page",defaultValue = "1") int page,
-                        @RequestParam(name = "size",defaultValue = "5") int size,
+                        @RequestParam(name = "size",defaultValue = "9") int size,
                         @RequestParam(name = "search",required = false) String search
     ){
 
