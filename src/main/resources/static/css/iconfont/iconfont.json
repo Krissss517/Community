@@ -1,0 +1,30 @@
+{
+  "id": "1979057",
+  "name": "Kris",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon",
+  "description": "交流社区",
+  "glyphs": [
+    {
+      "icon_id": "3876518",
+      "name": "github",
+      "font_class": "github",
+      "unicode": "e677",
+      "unicode_decimal": 58999
+    },
+    {
+      "icon_id": "8371994",
+      "name": "火热-s",
+      "font_class": "huore-s",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "14055556",
+      "name": "百度",
+      "font_class": "baidu",
+      "unicode": "e612",
+      "unicode_decimal": 58898
+    }
+  ]
+}

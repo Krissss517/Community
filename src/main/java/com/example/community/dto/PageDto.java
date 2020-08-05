@@ -18,10 +18,12 @@ public class PageDto<T> {
     private Integer totalPage;
 
 
+    //更新当前PageDto对象的属性值
     public void setPagination(Integer totalPage, Integer pageNum) {
         this.page=pageNum;
         this.totalPage=totalPage;
         pages.add(pageNum);
+        //最多展示当前页数的的前三页和后三页
         for (int i = 1; i <= 3; i++) {
             if(pageNum-i>0)
                 pages.add(0,pageNum-i);

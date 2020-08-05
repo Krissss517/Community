@@ -37,4 +37,12 @@ public class QuestionController {
         model.addAttribute("relateQuestion",relateQuestion);
         return "question";
     }
+
+    /*@GetMapping("/question/{tag}")
+    public String question(@PathVariable(name = "tag")  String tag,
+                           Model model){
+
+        return "question";
+    }*/
+
 }

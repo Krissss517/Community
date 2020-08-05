@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class TagCache {
     public static List<TagDto> getCache(){
@@ -15,23 +14,23 @@ public class TagCache {
 
         TagDto tagDto=new TagDto();
         tagDto.setCategoryName("开发语言");
-        tagDto.setTags(Arrays.asList("Js","PHP","CSS","HTML","Java","Node","Python"));
+        tagDto.setTags(Arrays.asList("C","C++","Java","Node.js","Python","Js","PHP","HTML","CSS"));
 
         TagDto framework = new TagDto();
         framework.setCategoryName("平台框架");
-        framework.setTags(Arrays.asList("spring","express","flask","koa","struts","yii"));
+        framework.setTags(Arrays.asList("Spring","SpringCloud","Mybatis","SpringMVC","Express","Flask","Koa","Struts","Yii"));
 
         TagDto server = new TagDto();
         server.setCategoryName("服务器");
-        server.setTags(Arrays.asList("Linux","apache","Ubuntu","Centos","Tomcat","Unix"));
+        server.setTags(Arrays.asList("Linux","Apache","Ubuntu","Centos","Tomcat","Unix"));
 
         TagDto dataBase = new TagDto();
         dataBase.setCategoryName("数据库");
-        dataBase.setTags(Arrays.asList("mysql","redis","nosql","SQLserver","Oracle","sqlite"));
+        dataBase.setTags(Arrays.asList("Mysql","Redis","Nosql","SQLserver","Oracle","Sqlite"));
 
         TagDto tool = new TagDto();
         tool.setCategoryName("开发工具");
-        tool.setTags(Arrays.asList("git","github","IDEA","vim","maven","eclipse","svn"));
+        tool.setTags(Arrays.asList("Visual","Git","Github","IDEA","Vim","Maven","Eclipse","Svn"));
 
         TagDtos.add(tagDto);
         TagDtos.add(framework);

@@ -20,6 +20,7 @@
 - ps -aux | grep java
 - git pull
 - mvn clean compile flyway:migrate -Pproduction
+- nohup java -jar -Dspring.profiles.active=production /root/App/Community/target/community-0.0.1-SNAPSHOT.jar > kris.file 2>&1 &
 
 ## 资料
 [Spring 文档](https://spring.io/guides)  

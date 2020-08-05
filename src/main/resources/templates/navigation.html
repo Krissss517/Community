@@ -1,8 +1,9 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <link rel="stylesheet" href="/css/矢量图.css">
+<link rel="stylesheet" href="/static/css/iconfont/iconfont.css">
 <body>
-
+<i  class="baidu iconfont iconbaidu"></i>
     <div th:fragment="nav">
         <nav class="navbar navbar-inverse">
             <div class="container-fluid" >
@@ -23,9 +24,7 @@
                     <ul class="nav navbar-nav navbar-right">
 
                         <li>
-                            <a href="https://www.baidu.com/" target="_blank">
-                                百度
-                            </a>
+                            <a href="http://www.baidu.com" target="_blank">百度</a>
                         </li>
                         <li th:if="${session.user!=null}">
                             <a href="/publish">提问</a>

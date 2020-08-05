@@ -1,5 +1,6 @@
 package com.example.community.controller;
 
+import com.example.community.Cache.TagCache;
 import com.example.community.dto.PageDto;
 import com.example.community.mapper.UserMapper;
 import com.example.community.service.QuestionService;
@@ -17,8 +18,10 @@ public class IndexController {
     @Autowired
     UserMapper userMapper;
 
+
     @Autowired
     QuestionService questionService;
+
 
     @GetMapping("/")
     public String index(HttpServletRequest request, Model model,
@@ -30,6 +33,7 @@ public class IndexController {
         PageDto pageDto=questionService.list(search,page,size);
         model.addAttribute("pageDto",pageDto);
         model.addAttribute("search",search);
+        model.addAttribute("tags", TagCache.getCache().get(0));
         return "index";
     }
 

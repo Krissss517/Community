@@ -38,6 +38,7 @@ public class QuestionService {
         if(StringUtils.isNotBlank(search)){
             //按照空格进行分割，并且将数组按照|进行拼接
             String[] tags = StringUtils.split(search, " ");
+            //Lamda表达式，将数组按照"|"进行拼接，比如Hello|World ，用于数据库的模糊查询
             search= Arrays.stream(tags).collect(Collectors.joining("|"));
         }
 
@@ -45,38 +46,47 @@ public class QuestionService {
 
         PageDto pageDto = new PageDto();
         Integer totalPage;
+        //将处理后的搜索字符串，在数据库中进行模糊查询
         QuestionQueryDto questionQueryDto = new QuestionQueryDto();
         questionQueryDto.setSearch(search);
         Integer totalCount =questionExtMapper.countBySearch(new QuestionQueryDto());
 
+        //根据每页显示的数量求出总页数
         if(totalCount%pageSize==0){
             totalPage=totalCount/pageSize;
         }else{
             totalPage=totalCount/pageSize+1;
         }
+
+        //Url请求的页面不在总页数的范围内，进行处理
         if(pageNum<1)
             pageNum=1;
-
         if(pageNum>totalPage)
             pageNum=totalPage;
         pageDto.setPagination(totalPage,pageNum);
-        //size*(i-1)
+        //分页查询主要是调用limit offset， pageSize（取包括当前offset位置的后pageSize个信息），
+        // 根据pageSize*(pageNum-1)公式，计算出分页的起始位置offset
         Integer offset=pageNum<1? 0 : pageSize*(pageNum-1);
         questionQueryDto.setPage(offset);
         questionQueryDto.setSize(pageSize);
+        //查询出所有问题
         List<Question> questions = questionExtMapper.selectBySearch(questionQueryDto);
         List<QuestionDto> questionDtos=new ArrayList<>();
 
+        //将question中的信息封装搭配QuestionDto中
         for(Question question:questions){
+            //根据问题的提出者=用户的唯一标识ID，查询出该问题的所属用户
             UserExample userExample = new UserExample();
             userExample.createCriteria().andIdEqualTo(question.getCreator());
             List<User> users=userMapper.selectByExample(userExample);
             QuestionDto questionDto = new QuestionDto();
+            //将该问题和该问题所属的用户一并封装到questionDto
             BeanUtils.copyProperties(question,questionDto);
             questionDto.setUser(users.get(0));
             questionDtos.add(questionDto);
         }
         pageDto.setData(questionDtos);
+
 
         return pageDto;
     }
