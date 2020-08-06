@@ -1,11 +1,7 @@
 package com.example.community.mapper;
 
 import com.example.community.dto.QuestionQueryDto;
-import com.example.community.model.Comment;
 import com.example.community.model.Question;
-import com.example.community.model.QuestionExample;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
@@ -18,4 +14,10 @@ public interface QuestionExtMapper {
     Integer countBySearch(QuestionQueryDto questionQueryDto);
 
     List<Question> selectBySearch(QuestionQueryDto questionQueryDto);
+
+    List<Question> selectRelatedTag(Question question);
+
+    Integer countByTag(QuestionQueryDto questionQueryDto);
+
+    List<Question> selectByTag(QuestionQueryDto questionQueryDto);
 }

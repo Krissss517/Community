@@ -91,6 +91,56 @@ public class QuestionService {
         return pageDto;
     }
 
+    public PageDto list(Integer pageNum, Integer pageSize,String tag) {
+
+        PageDto pageDto = new PageDto();
+        Integer totalPage;
+        //将处理后的搜索字符串，在数据库中进行模糊查询
+        QuestionQueryDto questionQueryDto = new QuestionQueryDto();
+        String replace = StringUtils.replace(tag, "+", "\\+");
+        questionQueryDto.setTag(replace);
+        Integer totalCount =questionExtMapper.countByTag(new QuestionQueryDto());
+
+        //根据每页显示的数量求出总页数
+        if(totalCount%pageSize==0){
+            totalPage=totalCount/pageSize;
+        }else{
+            totalPage=totalCount/pageSize+1;
+        }
+
+        //Url请求的页面不在总页数的范围内，进行处理
+        if(pageNum<1)
+            pageNum=1;
+        if(pageNum>totalPage)
+            pageNum=totalPage;
+        pageDto.setPagination(totalPage,pageNum);
+        //分页查询主要是调用limit offset， pageSize（取包括当前offset位置的后pageSize个信息），
+        // 根据pageSize*(pageNum-1)公式，计算出分页的起始位置offset
+        Integer offset=pageNum<1? 0 : pageSize*(pageNum-1);
+        questionQueryDto.setPage(offset);
+        questionQueryDto.setSize(pageSize);
+        //查询出所有问题
+        List<Question> questions = questionExtMapper.selectByTag(questionQueryDto);
+        List<QuestionDto> questionDtos=new ArrayList<>();
+
+        //将question中的信息封装搭配QuestionDto中
+        for(Question question:questions){
+            //根据问题的提出者=用户的唯一标识ID，查询出该问题的所属用户
+            UserExample userExample = new UserExample();
+            userExample.createCriteria().andIdEqualTo(question.getCreator());
+            List<User> users=userMapper.selectByExample(userExample);
+            QuestionDto questionDto = new QuestionDto();
+            //将该问题和该问题所属的用户一并封装到questionDto
+            BeanUtils.copyProperties(question,questionDto);
+            questionDto.setUser(users.get(0));
+            questionDtos.add(questionDto);
+        }
+        pageDto.setData(questionDtos);
+
+
+        return pageDto;
+    }
+
     public PageDto list(Long userId, int pageNum, int pageSize) {
 
         PageDto<QuestionDto> pageDto = new PageDto();
@@ -204,5 +254,19 @@ public class QuestionService {
         }).collect(Collectors.toList());
         return questionDtos;
 
+    }
+
+    public void deleteById(Long id) {
+
+        questionMapper.deleteByPrimaryKey(id);
+    }
+
+
+    public List<Question> getByTag(String tag) {
+        //筛选出包含此标签的所有问题
+        Question question=new Question();
+        question.setTag(tag);
+        List<Question> questions = questionExtMapper.selectRelatedTag(question);
+        return questions;
     }
 }

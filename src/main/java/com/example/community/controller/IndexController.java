@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +35,19 @@ public class IndexController {
         model.addAttribute("pageDto",pageDto);
         model.addAttribute("search",search);
         model.addAttribute("tags", TagCache.getCache().get(0));
+        return "index";
+    }
+
+    @GetMapping("/{tag}")
+    public String index(@PathVariable(name = "tag")  String tag, Model model,
+                        @RequestParam(name = "page",defaultValue = "1") int page,
+                        @RequestParam(name = "size",defaultValue = "9") int size
+    ){
+
+        PageDto pageDto=questionService.list(page,size,tag);
+        model.addAttribute("pageDto",pageDto);
+        model.addAttribute("tags", TagCache.getCache().get(0));
+        model.addAttribute("tag", tag);
         return "index";
     }
 

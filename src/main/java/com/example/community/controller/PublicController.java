@@ -2,7 +2,6 @@ package com.example.community.controller;
 
 import com.example.community.Cache.TagCache;
 import com.example.community.dto.QuestionDto;
-import com.example.community.mapper.QuestionMapper;
 import com.example.community.model.Question;
 import com.example.community.model.User;
 import com.example.community.service.QuestionService;
@@ -34,6 +33,13 @@ public class PublicController {
         model.addAttribute("id",question.getId());
         model.addAttribute("tags", TagCache.getCache());
         return "publish";
+    }
+
+    @GetMapping("/publish/delete/{id}")
+    public String delete(@PathVariable(name = "id") Long id,
+                       Model model){
+        questionService.deleteById(id);
+        return "redirect:/profile/questions";
     }
 
     @GetMapping("/publish")
