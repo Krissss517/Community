@@ -8,7 +8,7 @@ class CommunityApplicationTests {
 
 
     @Test
-    void testQuick(int[] temp,int begin,int end) {
+    void testQuick() {
 
 
     }
