@@ -21,6 +21,7 @@ public class FileController {
     private TencentProvider tencentProvider;
     @RequestMapping("/file/upload")
     @ResponseBody
+    //编写图片上传接口,将本地图片上传到腾讯云的存储桶
     private FileDto upload(HttpServletRequest request) throws IOException {
         MultipartHttpServletRequest multipartHttpServletRequest=(MultipartHttpServletRequest)request;
         MultipartFile mFile = multipartHttpServletRequest.getFile("editormd-image-file");

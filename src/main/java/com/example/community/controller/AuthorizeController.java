@@ -2,14 +2,12 @@ package com.example.community.controller;
 
 import com.example.community.dto.AccessTokenDto;
 import com.example.community.dto.GitHubUser;
-import com.example.community.mapper.UserMapper;
 import com.example.community.model.User;
 import com.example.community.provider.GitHubProvider;
 import com.example.community.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -57,7 +55,10 @@ public class AuthorizeController {
             user.setName(gitHubUser.getName());
             user.setAccountId(String.valueOf(gitHubUser.getId()));
             user.setAvatarUrl(gitHubUser.getAvatar_url());
+            //将从GItHub上获取到的用户信息进行封装并存入数据库
             userService.createOrUpdate(user);
+            //并将用户的唯一标识token，存入到Cookie，方便下次登录（拦截器会遍历到该cookie，获取到数据库里的用户信息）
+            //不需要再次向Github拉去信息
             response.addCookie(new Cookie("token",token));
             return "redirect:/";
 

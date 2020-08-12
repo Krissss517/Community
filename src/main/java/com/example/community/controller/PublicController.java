@@ -22,6 +22,7 @@ public class PublicController {
     @Autowired
     private QuestionService questionService;
 
+    //编辑本人已经发布过的问题
     @GetMapping("/publish/{id}")
     public String edit(@PathVariable(name = "id") Long id,
                        Model model){
@@ -35,6 +36,7 @@ public class PublicController {
         return "publish";
     }
 
+    //删除本人已经发布过的问题
     @GetMapping("/publish/delete/{id}")
     public String delete(@PathVariable(name = "id") Long id,
                        Model model){

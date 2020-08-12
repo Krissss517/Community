@@ -34,6 +34,7 @@ public class QuestionService {
     @Autowired
     UserMapper userMapper;
 
+    //对所有问题进行查询并分页显示（包括搜索框查询 主要是用到动态Sql）
     public PageDto list(String search, Integer pageNum, Integer pageSize) {
         if(StringUtils.isNotBlank(search)){
             //按照空格进行分割，并且将数组按照|进行拼接
@@ -91,6 +92,7 @@ public class QuestionService {
         return pageDto;
     }
 
+    //以标签为条件，查询包含该标签的所有问题并分页显示
     public PageDto list(Integer pageNum, Integer pageSize,String tag) {
 
         PageDto pageDto = new PageDto();
@@ -181,6 +183,7 @@ public class QuestionService {
         return pageDto;
     }
 
+    //查询某个具体问题
     public QuestionDto getById(Long id) {
         Question question= questionMapper.selectByPrimaryKey(id);
         if(question==null){
@@ -196,6 +199,7 @@ public class QuestionService {
         return questionDto;
     }
 
+    //对问题进行更改或者第一次插入
     public void createOrUpdate(Question question) {
 
         if(question.getId()==null){
@@ -256,6 +260,7 @@ public class QuestionService {
 
     }
 
+    //删除某个问题
     public void deleteById(Long id) {
 
         questionMapper.deleteByPrimaryKey(id);

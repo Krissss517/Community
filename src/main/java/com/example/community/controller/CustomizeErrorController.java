@@ -16,6 +16,7 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("${server.error.path:${error.path:/error}}")
+//实现errorController 重写errorHtml方法，自定义错误页面信息
 public class CustomizeErrorController implements ErrorController {
     @Override
     public String getErrorPath() {

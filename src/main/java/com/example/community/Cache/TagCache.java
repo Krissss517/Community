@@ -41,10 +41,12 @@ public class TagCache {
         return TagDtos;
     }
 
+    //输入非法标签的判断
     public static String filterInValid(String tags){
         String[] split = StringUtils.split(tags, ",");
         List<TagDto> tagDtos=getCache();
 
+        //如果输入的标签中有不属于标签组的，将其拼接成字符串返回
         List<String> tagList = tagDtos.stream().flatMap(tag -> tag.getTags().stream()).collect(Collectors.toList());
         String inValid = Arrays.stream(split).filter(t -> !tagList.contains(t)).collect(Collectors.joining(","));
         return inValid;

@@ -36,8 +36,10 @@ public class CommentService {
     private  CommentExtMapper commentExtMapper;
     @Autowired
     private NotificationMapper notificationMapper;
-    @Transactional
+    @Transactional( )
+    //将该评论插入数据库，并该评论的通知信息也一并插入
     public void insert(Comment comment, User commentator) {
+
         if(comment.getParentId()==null||comment.getParentId()==0){
             throw new CustomizeException(CustomizeErrorCode.TARGET_NOT_FOUND);
         }
@@ -46,16 +48,18 @@ public class CommentService {
             throw new CustomizeException(CustomizeErrorCode.TYPE_PARAM_WRONG);
         }
 
+        //如果该条评论的类型是回复评论的话
         if(comment.getType()==CommentTypeEnum.COMMENT.getType()){
             //回复评论
+            //查询出这条父评论
             Comment dbComment = commentMapper.selectByPrimaryKey(comment.getParentId());
             if(dbComment==null){
                 throw new CustomizeException(CustomizeErrorCode.COMMENT_NOT_FOUND);
             }
 
-
+            //插入这条回复评论的子评论
             commentMapper.insert(comment);
-            //增加评论数
+            //增加父评论的评论数
             Comment parentComment=new Comment();
             parentComment.setId(comment.getParentId());
             parentComment.setCommentContent(1);
@@ -89,18 +93,23 @@ public class CommentService {
         notification.setType(notificationType.getState());
         notification.setOuterId(outerId);
         notification.setNotifier(comment.getCommentator());
+        //默认该通知信息的状态是未读
         notification.setStatus(NotificationStatusEnum.UNREAD.getStatus());
         notification.setReceiver(receiver);
+        //通知者的名字
         notification.setNotifierName(notifierName);
         notification.setOuterTitle(outerTitle);
         notificationMapper.insert(notification);
     }
 
+    //根据id查询出属于该评论类型的所有评论
     public List<CommentDto> listByQuestionId(Long id, CommentTypeEnum type) {
+
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria().andParentIdEqualTo(id)
                 .andTypeEqualTo(type.getType());
         commentExample.setOrderByClause("gmt_create desc");
+        //选出所有符合该id和评论类型的评论集合
         List<Comment> commentList = commentMapper.selectByExample(commentExample);
 
         if(commentList.size()==0){
@@ -112,7 +121,7 @@ public class CommentService {
         UserExample userExample = new UserExample();
         userExample.createCriteria()
                 .andIdIn(list);
-        //获取所有评论人的信息
+        //通过comment.getCommentator()=用户的唯一id，获取所有评论人的信息
         List<User> users = userMapper.selectByExample(userExample);
         //将User对象按照id和对象的唯一映射进行一个map封装，这样进行User与Comment匹配的能降低时间复杂度n2降低为n
         Map<Long, User> userMap = users.stream().collect(Collectors.toMap(user -> user.getId(), user -> user));

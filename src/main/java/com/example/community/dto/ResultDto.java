@@ -7,8 +7,11 @@ import lombok.Data;
 @Data
 public class ResultDto<T> {
 
+    //状态码
     private Integer code;
+    //信息
     private String message;
+    //序列化该对象以JSON的形式返回给JQuery请求
     private T data;
 
     public static ResultDto errorOf(Integer code,String message){

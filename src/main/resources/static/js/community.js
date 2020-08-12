@@ -14,21 +14,23 @@ function comment2Target(targetId, type, content) {
         return;
     }
     $.ajax({
-        type: "POST",
-        url: "/comment",
+        type: "POST",//请求方式
+        url: "/comment",//请求路径
         contentType: "application/json",
-        data: JSON.stringify(
+        data: JSON.stringify(//需要传输的数据
             {
                 "parentId": targetId,
                 "content": content,
                 "type": type
             }
         ),
+        //JQuery的回调函数
         success: function (response) {
             if (response.code == 200) {
+                //回复成功的话，刷新页面
                 window.location.reload();
             } else {
-                if (response.code = 2003) {
+                if (response.code == 2003) {
                     var isAccept = confirm(response.message);
                     if (isAccept) {
                         window.open("https://github.com/login/oauth/authorize?client_id=b5c58369cbc85cb2e5f1&redirect_uri=http://localhost:8080/callback&scope=user&state=1");
@@ -41,11 +43,10 @@ function comment2Target(targetId, type, content) {
 
             }
         },
+        //期待返回值类型
         dataType: "json"
 
     });
-    console.log(content);
-    console.log(questionId);
 
 }
 
@@ -80,7 +81,9 @@ function collapseComments(e) {
             e.setAttribute("data-collapse", "in");
             e.classList.add("active");
         } else {
+            //获取当前评论下的所有二级评论，id为该评论的唯一标识
             $.getJSON("/comment/" + id, function (data) {
+                //循环展示二级评论，data为/comment/{id}接口返回的CommentDto集合
                 $.each(data.data.reverse(), function (index, comment) {
                     var mediaLeftElement = $("<div/>", {
                         "class": "media-left"

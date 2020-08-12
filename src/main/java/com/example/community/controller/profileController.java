@@ -25,6 +25,7 @@ public class profileController {
     @Autowired
     NotificationService notificationService;
 
+    //我的问题/回复 页面请求
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable(name = "action") String action,
                           Model model, HttpServletRequest request,
@@ -34,11 +35,13 @@ public class profileController {
         User user = (User) request.getSession().getAttribute("user");
         if(user==null)
             return "redirect:/";
+        //我的问题页面
         if("questions".equals(action)){
             model.addAttribute("section","questions");
             model.addAttribute("sectionName","我的提问");
             PageDto pageDto = questionService.list(user.getId(), page, size);
             model.addAttribute("pageDto",pageDto);
+            //我的回复页面
         }else if("replies".equals(action)){
             PageDto pageDto = notificationService.list(user.getId(), page, size);
             model.addAttribute("section","replies");

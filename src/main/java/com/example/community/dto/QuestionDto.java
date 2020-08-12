@@ -3,8 +3,7 @@ package com.example.community.dto;
 import com.example.community.model.User;
 import lombok.Data;
 
-import java.math.BigInteger;
-
+//封装了一个问题的所有信息包括该问题对应的用户信息
 @Data
 public class QuestionDto {
     private Long id;

@@ -14,7 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-
+//实现HandlerInterceptor接口，在每次访问资源时遍历Cookie，查询是否有token信息，
+// 通过token查询数据库是否有用户信息，有的话就存入session域中
 @Service
 public class LocalInterceptor implements HandlerInterceptor {
 

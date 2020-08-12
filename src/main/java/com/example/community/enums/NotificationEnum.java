@@ -22,6 +22,7 @@ public enum  NotificationEnum {
         return name;
     }
 
+    //通过状态码获取到"回复了问题"还是"回复了评论"
     public static String nameOf(int type){
         for (NotificationEnum notificationEnum:
              NotificationEnum.values()) {
