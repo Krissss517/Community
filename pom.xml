@@ -21,9 +21,9 @@
         <profile>
             <id>production</id>
             <properties>
-                <db.url>jdbc:mysql://175.24.11.105:3306/community?serverTimezone=UTC</db.url>
+                <db.url>jdbc:mysql://175.24.11.105:3308/community?serverTimezone=UTC</db.url>
                 <db.user>root</db.user>
-                <db.password>123456</db.password>
+                <db.password>088794zk</db.password>
             </properties>
         </profile>
 
@@ -41,6 +41,7 @@
     </profiles>
 
     <dependencies>
+        <!--启动器-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -114,6 +115,7 @@
 
     <build>
         <plugins>
+            <!--将程序打包成可执行Jar包 （可执行的应用程序）-->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
