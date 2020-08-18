@@ -17,28 +17,6 @@
     <properties>
         <java.version>1.8</java.version>
     </properties>
-    <profiles>
-        <profile>
-            <id>production</id>
-            <properties>
-                <db.url>jdbc:mysql://175.24.11.105:3308/community?serverTimezone=UTC</db.url>
-                <db.user>root</db.user>
-                <db.password>088794zk</db.password>
-            </properties>
-        </profile>
-
-        <profile>
-            <id>dev</id>
-            <properties>
-                <db.url>jdbc:mysql://192.168.142.54:3306/community?serverTimezone=UTC</db.url>
-                <db.user>root</db.user>
-                <db.password>088794</db.password>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-    </profiles>
 
     <dependencies>
         <!--启动器-->
